@@ -1,0 +1,431 @@
+/*
+  Kana v2 layout cleanup
+  Goal: keep the existing visual language, but use the much simpler content structure
+  of vedxyz/kana: one centered column, one practice surface, controls after the drill.
+*/
+
+/* ---------- app structure ---------- */
+body {
+  background:
+    radial-gradient(circle at 14% -10%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 30rem),
+    var(--bg);
+}
+
+.app-shell {
+  display: block;
+  min-height: 100vh;
+}
+
+/* turn the giant left rail into one quiet top navigation row */
+.sidebar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  width: 100%;
+  height: auto;
+  padding: 11px clamp(14px, 3vw, 28px);
+  border-right: 0;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(18px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.brand {
+  padding: 0;
+  gap: 9px;
+  flex: 0 0 auto;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: calc(18px * var(--text-scale));
+}
+
+.brand h1 {
+  font-size: calc(16px * var(--text-scale));
+}
+
+.nav {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.nav-btn {
+  width: auto;
+  padding: 8px 10px;
+  border-radius: 9px;
+  gap: 7px;
+  font-size: calc(12px * var(--text-scale));
+}
+
+.nav-btn.active {
+  box-shadow: none;
+}
+
+.nav-ico {
+  width: auto;
+  font-size: calc(14px * var(--text-scale));
+}
+
+.sidebar-spacer,
+.sidebar-card,
+.topbar {
+  display: none;
+}
+
+.content {
+  width: min(100%, 860px);
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 38px 20px 80px;
+}
+
+/* ---------- home / mode menu ---------- */
+.tool-overview {
+  padding: 0 2px 18px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.tool-overview h3 {
+  font-size: calc(24px * var(--text-scale));
+}
+
+.tool-overview p {
+  font-size: calc(13px * var(--text-scale));
+}
+
+/* the dashboard-y stats are not needed to choose a practice mode */
+.tool-stats {
+  display: none;
+}
+
+.tool-mode-grid {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.tool-mode-grid .mode-card {
+  min-height: 0;
+  padding: 17px 18px;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 14px;
+  row-gap: 2px;
+  align-items: center;
+  box-shadow: none;
+}
+
+.tool-mode-grid .mode-card:hover {
+  transform: translateY(-1px);
+}
+
+.tool-mode-grid .mode-icon {
+  grid-row: 1 / 3;
+  width: 42px;
+  height: 42px;
+  margin: 0;
+  border-radius: 12px;
+}
+
+.tool-mode-grid .mode-card h4 {
+  margin: 0;
+  font-size: calc(15px * var(--text-scale));
+}
+
+.tool-mode-grid .mode-card p {
+  margin: 0;
+  font-size: calc(12px * var(--text-scale));
+  line-height: 1.4;
+}
+
+/* ---------- practice: focus first, setup after the fold ---------- */
+.app-shell:has(.practice-shell) .sidebar,
+.app-shell:has(.practice-shell) .mobile-nav {
+  display: none !important;
+}
+
+.app-shell:has(.practice-shell) .content {
+  width: min(100%, 760px);
+  max-width: 760px;
+  padding: 20px 16px 72px;
+}
+
+.practice-shell {
+  overflow: visible;
+  border-radius: 18px;
+  box-shadow: 0 12px 38px rgba(38, 35, 28, .07);
+}
+
+.practice-top {
+  padding: 14px 16px;
+  gap: 10px;
+}
+
+.practice-meta {
+  gap: 9px;
+}
+
+.back-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+}
+
+.practice-meta h3 {
+  font-size: calc(14px * var(--text-scale));
+}
+
+.practice-meta p {
+  font-size: calc(11px * var(--text-scale));
+}
+
+/* play/replay lives next to the prompt; reset/setup does not need to stay in your face */
+.practice-actions {
+  display: none;
+}
+
+.workspace {
+  display: block;
+  min-height: 0;
+}
+
+.study-area {
+  min-height: calc(100dvh - 86px);
+  padding: 24px 24px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* no dashboard progress bar while reading a kana */
+.progress-row,
+.prompt-chip {
+  display: none;
+}
+
+.prompt-zone {
+  flex: 1;
+  min-height: 0;
+  padding: 34px 0 18px;
+  justify-content: center;
+}
+
+.kana-display {
+  font-size: clamp(calc(92px * var(--text-scale)), 20vw, calc(150px * var(--text-scale)));
+  margin: 0 0 26px;
+  letter-spacing: -.045em;
+}
+
+.word-display {
+  font-size: clamp(calc(42px * var(--text-scale)), 9vw, calc(74px * var(--text-scale)));
+  margin-bottom: 28px;
+}
+
+.number-display {
+  font-size: clamp(calc(50px * var(--text-scale)), 10vw, calc(82px * var(--text-scale)));
+  margin-bottom: 28px;
+}
+
+.first-look {
+  margin: -10px 0 16px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: calc(11px * var(--text-scale));
+}
+
+.sound-row {
+  margin: 0 0 18px;
+}
+
+.sound-btn {
+  padding: 7px 10px;
+  background: transparent;
+  font-size: calc(11px * var(--text-scale));
+}
+
+.answer-wrap {
+  width: min(360px, 100%);
+}
+
+.answer-input {
+  min-height: 50px;
+  border-radius: 13px;
+  padding: 12px 15px;
+  font-size: calc(17px * var(--text-scale));
+  box-shadow: none;
+}
+
+/* Enter is the real interaction; remove the decorative duplicate submit control */
+.submit-arrow {
+  display: none;
+}
+
+.feedback {
+  min-height: 22px;
+  margin-top: 10px;
+  font-size: calc(12px * var(--text-scale));
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: calc(10px * var(--text-scale));
+}
+
+/* keep session context, but make it read like a footer rather than three cards */
+.session-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.session-stat {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.session-stat b {
+  font-size: calc(13px * var(--text-scale));
+}
+
+.session-stat span {
+  font-size: calc(9px * var(--text-scale));
+  letter-spacing: .05em;
+}
+
+/* setup now comes after the drill, as normal page content */
+.options-panel {
+  border-left: 0;
+  border-top: 1px solid var(--line);
+  padding: 28px 24px 40px;
+  background: transparent;
+}
+
+.options-panel h4 {
+  max-width: 520px;
+  margin: 0 auto 18px;
+  font-size: calc(16px * var(--text-scale));
+}
+
+.option-group,
+.options-panel > .switch-row,
+.options-panel > .notice {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.option-group {
+  padding: 16px 0;
+}
+
+.option-label {
+  font-size: calc(11px * var(--text-scale));
+}
+
+.segmented button {
+  min-height: 38px;
+  font-size: calc(11px * var(--text-scale));
+}
+
+/* page scroll, not a tiny scrollbar inside a tiny panel */
+.stage-list {
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+  gap: 5px;
+}
+
+.stage-btn {
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.checkbox-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* ---------- other pages: keep them centered and quiet ---------- */
+.chart-shell,
+.settings-shell {
+  box-shadow: none;
+  border-radius: 18px;
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 860px) {
+  /* keep the existing compact bottom navigation on non-practice pages */
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+    padding: 24px 14px 92px;
+  }
+
+  .mobile-nav {
+    display: grid;
+  }
+
+  .app-shell:has(.practice-shell) .content {
+    padding: 10px 10px 44px;
+  }
+
+  .practice-shell {
+    border-radius: 16px;
+  }
+
+  .study-area {
+    min-height: calc(100dvh - 62px);
+    padding: 18px 16px 24px;
+  }
+
+  .prompt-zone {
+    padding: 24px 0 14px;
+  }
+
+  .kana-display {
+    font-size: clamp(calc(86px * var(--text-scale)), 35vw, calc(138px * var(--text-scale)));
+  }
+
+  .options-panel {
+    padding: 24px 16px 34px;
+  }
+}
+
+@media (max-width: 560px) {
+  .tool-mode-grid .mode-card {
+    padding: 15px;
+  }
+
+  .checkbox-list {
+    grid-template-columns: 1fr;
+  }
+
+  .session-stats {
+    gap: 7px 14px;
+  }
+}
